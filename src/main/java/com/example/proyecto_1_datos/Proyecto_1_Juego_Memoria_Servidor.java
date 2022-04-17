@@ -13,11 +13,11 @@ public class Proyecto_1_Juego_Memoria_Servidor extends Application {
 
     // Cargar el fmxl que contienen el GUI del Servidor.
     private void crearContenido() throws IOException {
-        FXMLLoader loader = new FXMLLoader(Proyecto_1_Juego_Memoria_Servidor.class.getResource("hello-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(Proyecto_1_Juego_Memoria_Servidor.class.getResource("InterfazServidor.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
-        HelloController controller = loader.getController();
-        controller.setProgramaPrincipal(this);
+        //HelloController controller = loader.getController();
+        //controller.setProgramaPrincipal(this);
         stage.show();
     }
 

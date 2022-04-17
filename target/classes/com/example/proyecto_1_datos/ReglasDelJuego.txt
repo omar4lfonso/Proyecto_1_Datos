@@ -1,0 +1,16 @@
+Juego de Memoria:
+
+Este es un simple juego de memoria que
+consiste en encontrar el par de cada carta.
+El programa indicará de quién es el turno
+basado en los nombres ingresados durante el
+Login. Existen 3 power-ups que consisten en
+lo siguiente:
+
+1 - Si encuentra carta par al primer turno 
+gana 5 puntos extra.
+2 - Si encuentra cartas pares en jugadas
+consecutivas gana 2 puntos extra.
+3 - Si encuentra una carta comodín en alguna
+de las dos cartas gana 1 punto extra y gana
+turno extra.

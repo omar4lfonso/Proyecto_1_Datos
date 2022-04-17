@@ -1,10 +1,15 @@
 package com.example.proyecto_1_datos.controlador;
 
+import com.example.proyecto_1_datos.modelo.NombresUsuarios;
+import com.example.proyecto_1_datos.modelo.SwitchClases;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Servidor {
@@ -12,14 +17,27 @@ public class Servidor {
     // Debe crearse un ID único para cada conexión a un nuevo cliente
     private static int idUnico;
 
+    // un ArrayList para guardar la lista de clientes conectados
+    private ClientThread clienteConectado;
+
+    // Traer objeto del controlador servidor
+    private ControladorVentanaServidor controladorVentanaServidor;
+
+    // para mostrar fecha y hora
+    private SimpleDateFormat sdf;
+
     // Debe identificarse el puerto al que se desea escuchar
     private int puerto;
 
     // Esta variable se usa para apagar el servidor
     private boolean continuarServidor;
 
-    public Servidor(int puerto){
+    public Servidor(int puerto, ControladorVentanaServidor controladorVentanaServidor){
         this.puerto = puerto;
+        this.controladorVentanaServidor = controladorVentanaServidor;
+
+        // para mostrar la fecha
+        sdf = new SimpleDateFormat("HH:mm:ss");
     }
 
 
@@ -33,33 +51,34 @@ public class Servidor {
 
             // Ciclo infinito para esperar por conexiones
             while (continuarServidor) {
-                //TODO: imprimir un mensaje que indicque que el servidor está escuchando
+                // Escribir mensaje explicando que se está esperando
+                mostrarLog("Servidor esperando por mensajes en el puerto " + puerto + ".");
 
                 Socket socket = serverSocket.accept(); // aceptar conexión
                 if(!continuarServidor){
                     break;
                 }
 
-                //TODO: crear clase de hilos para los clientes e instanciar un hilo
+                clienteConectado = new ClientThread(socket); // crear un hilo del cliente
 
-                //TODO: agregar el cliente a una lista
-
-                //TODO: iniciar hilo para cliente
+                clienteConectado.start();
             }
             // En caso de que se solicite detener
             try {
                 serverSocket.close();
 
-                // TODO: cerrar todas las conexiones a los stream y los hilos de los clientes
+                clienteConectado.sEntrada.close();
+                clienteConectado.sSalida.close();
+                clienteConectado.socket.close();
             }
             catch(IOException ioE) {
-                // TODO: ver si se puede imprimir algún mensaje de error
+                mostrarLog("Error cerrando las conexiones del cliente: " + ioE + "\n");
             }
         }
         // something went bad
         catch (IOException e) {
             String msg = "Excepción en un nuevo ServerSocket: " + e + "\n";
-            // TODO: mostrar mensaje en ventana de log
+            mostrarLog(msg);
         }
     }
 
@@ -74,7 +93,8 @@ public class Servidor {
             new Socket("localhost", puerto);
         }
         catch (Exception e){
-            // TODO: ver si se puede agregar algún mensaje al log
+            String msg = "Excepción en la detención del servidor: " + e + "\n";
+            mostrarLog(msg);
         }
     }
 
@@ -83,26 +103,8 @@ public class Servidor {
      * @param msg : String a mostrar en el event log
      */
     private synchronized void mostrarLog(String msg) {
-        // TODO:
-        /*String time = sdf.format(new Date()) + " " + msg;
-        controladorServidor.agregarEvento(time + "\n");*/
-    }
-
-    /**
-     * Esta función se encarga de eliminar un cliente cuando este utiliza el botón de SALIR
-     * @param id : identificador del cliente
-     */
-    synchronized void remove(int id){
-        // TODO: Buscar el ID del cliente
-        /*for(int i = 0; i < clientesConectados.size(); ++i){
-            ClientThread ct = clientesConectados.get(i);
-            if(ct.id == id){
-                controladorServidor.remove(ct.nombreUsuario);
-                ct.writeMsg(ct.nombreUsuario + ":REMOVE");
-                clientesConectados.remove(i);
-                return;
-            }
-        }*/
+        String time = sdf.format(new Date()) + " " + msg;
+        controladorVentanaServidor.agregarEvento(time + "\n");
     }
 
     class ClientThread extends Thread {
@@ -111,34 +113,18 @@ public class Servidor {
         ObjectInputStream sEntrada;
         ObjectOutputStream sSalida;
 
-        // ID único: facilita la desconexión
-        int id;
-        // TODO: establecer formato de mensajes
-        /*// el nombre de usuario del cliente
-        String nombreUsuario;
-        // identificador de comandos recibidos
-        MensajeChat cm;
-        // Fecha
-        String fecha;*/
+        Object msjEntrada;
 
         ClientThread (Socket socket) {
-            id = ++idUnico;
             this.socket = socket;
 
-            System.out.println("Hilo tratando de crear los objectos de Stream");
             try{
                 sSalida = new ObjectOutputStream(socket.getOutputStream());
                 sEntrada = new ObjectInputStream(socket.getInputStream());
-
-                // TODO: establecer formato de mensajes
-                /*// leer nombre de usuario
-                nombreUsuario = (String) sEntrada.readObject();
-                controladorServidor.agregarUsuario(nombreUsuario);*/
             }
             catch(IOException e){
-                /* TODO: mostrarLog("Excepcion creando nuevo Stream de Entrada/Salida: " + e)*/;
+                 mostrarLog("Excepción creando nuevo Stream de Entrada/Salida: " + e);
             }
-            /* TODO: fecha = new Date().toString() + "\n";*/
         }
 
         // Función que correrá continuamente
@@ -146,39 +132,28 @@ public class Servidor {
             // correr continuamente hasta un LOGOUT
             boolean continuarCorriendo = true;
             while(continuarCorriendo) {
-                // leer un String como objeto
-                // TODO: debe definirse el procesamiento de los mensajes recibidos por el cliente
-                /*try {
-                    cm = (MensajeChat) sEntrada.readObject();
-                }
-                catch (IOException e) {
-                    mostrarLog(" Exepción leyendo el Stream: " + e);
+                // Leer un Objeto del input Stream
+                try{
+                    msjEntrada = sEntrada.readObject();
+                } catch (IOException e) {
+                    mostrarLog(" Excepción leyendo el Stream: " + e);
+                    break;
+                } catch (ClassNotFoundException e) {
                     break;
                 }
-                catch (ClassNotFoundException e2){
-                    break;
+                switch (SwitchClases.Clazz.valueOf(msjEntrada.getClass().getSimpleName())){
+                    case NombresUsuarios:
+                        // TODO
+                        break;
                 }
-                String mensaje = cm.obtenerMensaje();
-
-                // Verificar de acuerdo al tipo de mensaje recibido
-                switch (cm.obtenerTipo()){
-                    case MensajeChat.MENSAJE:
-                        difundirMsg(nombreUsuario + ": " + mensaje);
-                        break;
-                    case MensajeChat.LOGOUT:
-                        mostrarLog(nombreUsuario + " desconectar con un mensaje de LOGOUT.");
-                        difundirMsg(nombreUsuario + ":REMOVE");
-                        break;
-                }*/
             }
             //eliminar de la lista que contiene los clientes conectados
-            /*TODO: remove(id);
-            close();*/
+            close();
         }
 
-        // Intentar cerrar todo
+        // Intentar cerrar los streams
         private void close() {
-            // intentar cerrar la conexion
+            // intentar cerrar la conexión
             try {
                 if(sSalida != null) sSalida.close();
             }
