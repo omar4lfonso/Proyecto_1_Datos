@@ -1,5 +1,8 @@
 package com.example.proyecto_1_datos.modelo;
 
+import java.text.Normalizer;
+import java.util.Random;
+
 public class NombresUsuarios {
 
     public enum NumJugador{
@@ -8,15 +11,31 @@ public class NombresUsuarios {
     public static boolean TURNO_JUGADOR1 = false;
     public static boolean TURNO_JUGADOR2 = true;
 
+    private FormatoMensajes.FORMATO_MSJ tipo;
     private String jugador1;
     private String jugador2;
     private int puntajeJugador1;
     private int puntajeJugador2;
     private boolean turnoJugador; // False -> Jugador 1, True -> Jugador 2
 
-    public NombresUsuarios(String jugador1, String jugador2){
+    public NombresUsuarios(String jugador1, String jugador2,
+                           int puntajeJugador1, int puntajeJugador2){
+        this.tipo = FormatoMensajes.FORMATO_MSJ.NOMBRES_USUARIOS;
         this.jugador1 = jugador1;
         this.jugador2 = jugador2;
+        this.puntajeJugador1 = puntajeJugador1;
+        this.puntajeJugador2 = puntajeJugador2;
+
+        this.turnoJugador = getRandomBoolean();
+    }
+
+    private boolean getRandomBoolean() {
+        Random random = new Random();
+        return random.nextBoolean();
+    }
+
+    public FormatoMensajes.FORMATO_MSJ obtenerTipo() {
+        return tipo;
     }
 
     public String getNombreJugador(NumJugador numJugador){
