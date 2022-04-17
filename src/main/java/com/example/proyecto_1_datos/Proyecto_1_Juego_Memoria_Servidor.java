@@ -16,8 +16,24 @@ public class Proyecto_1_Juego_Memoria_Servidor extends Application {
         FXMLLoader loader = new FXMLLoader(Proyecto_1_Juego_Memoria_Servidor.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
+        HelloController controller = loader.getController();
+        controller.setProgramaPrincipal(this);
         stage.show();
     }
+
+    public void mostrarMenuAdministrador() {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(Proyecto_1_Juego_Memoria_Servidor.class.getResource("hello-view 2.fxml"));
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+            /*stage.toFront();*/
+            stage.show();
+
+        } catch (Exception e) {
+        }
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         this.stage = stage;
