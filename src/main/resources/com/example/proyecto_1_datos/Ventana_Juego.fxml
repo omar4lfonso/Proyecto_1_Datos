@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="593.0" prefWidth="511.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="594.0" prefWidth="511.0">
+         <children>
+            <TilePane fx:id="tilePaneMatrizImagenes" layoutX="14.0" layoutY="14.0" prefHeight="426.0" prefWidth="484.0" />
+            <Label fx:id="labelTiempo" layoutX="48.0" layoutY="520.0" text="Time" />
+            <Label layoutX="176.0" layoutY="504.0" text="Turno de Jugador" />
+            <Label fx:id="labelNJugador1Puntaje" layoutX="375.0" layoutY="504.0" text="P1" />
+            <Label fx:id="labelNJugador1Puntaje" layoutX="375.0" layoutY="544.0" text="P2" />
+            <Label fx:id="labelPuntajeJ1" layoutX="439.0" layoutY="504.0" text="Puntaje1" />
+            <Label fx:id="labelPuntajeJ2" layoutX="439.0" layoutY="544.0" text="Puntaje2" />
+            <Label fx:id="labelNombreJugador" layoutX="176.0" layoutY="536.0" text="Nombre Jugador" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

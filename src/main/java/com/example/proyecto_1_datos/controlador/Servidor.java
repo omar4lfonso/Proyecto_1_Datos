@@ -144,7 +144,10 @@ public class Servidor {
                 switch (SwitchClases.Clazz.valueOf(msjEntrada.getClass().getSimpleName())){
                     case NombresUsuarios:
                         // TODO
+                        System.out.println("Entramos!!");
                         break;
+                    default:
+                        System.out.println("No Class!!");
                 }
             }
             //eliminar de la lista que contiene los clientes conectados

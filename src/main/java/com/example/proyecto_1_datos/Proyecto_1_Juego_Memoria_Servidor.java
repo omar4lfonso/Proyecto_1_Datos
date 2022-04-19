@@ -10,6 +10,14 @@ import java.io.IOException;
 public class Proyecto_1_Juego_Memoria_Servidor extends Application {
     private Stage stage;
 
+    /*private static Proyecto_1_Juego_Memoria_Servidor miAppCliente;
+
+    public static Proyecto_1_Juego_Memoria_Servidor getMiAppCliente(){
+        if(miAppCliente == null){
+            miAppCliente = new Proyecto_1_Juego_Memoria_Servidor();
+        }
+        return miAppCliente;
+    }*/
 
     // Cargar el fmxl que contienen el GUI del Servidor.
     private void crearContenido() throws IOException {
@@ -21,7 +29,7 @@ public class Proyecto_1_Juego_Memoria_Servidor extends Application {
         stage.show();
     }
 
-    public void mostrarMenuAdministrador() {
+    public void mostrarVentanaJuego() {
         try {
 
             FXMLLoader loader = new FXMLLoader(Proyecto_1_Juego_Memoria_Servidor.class.getResource("hello-view 2.fxml"));

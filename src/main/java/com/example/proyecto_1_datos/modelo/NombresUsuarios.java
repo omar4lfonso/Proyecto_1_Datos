@@ -1,9 +1,10 @@
 package com.example.proyecto_1_datos.modelo;
 
+import java.io.Serializable;
 import java.text.Normalizer;
 import java.util.Random;
 
-public class NombresUsuarios {
+public class NombresUsuarios implements Serializable {
 
     public enum NumJugador{
         JUGADOR1, JUGADOR2

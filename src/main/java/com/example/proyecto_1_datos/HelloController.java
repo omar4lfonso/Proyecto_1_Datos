@@ -12,7 +12,7 @@ public class HelloController {
     @FXML
     protected void onHelloButtonClick() {
         welcomeText.setText("Welcome to JavaFX Application!");
-        mainVentana.mostrarMenuAdministrador();
+        //mainVentana.mostrarMenuAdministrador();
     }
 
     public void setProgramaPrincipal(Proyecto_1_Juego_Memoria_Servidor ProgramaPrincipal) {
