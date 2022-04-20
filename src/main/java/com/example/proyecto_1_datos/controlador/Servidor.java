@@ -3,6 +3,7 @@ package com.example.proyecto_1_datos.controlador;
 import com.example.proyecto_1_datos.modelo.Lista_DE_Imagenes;
 import com.example.proyecto_1_datos.modelo.NombresUsuarios;
 import com.example.proyecto_1_datos.modelo.SwitchClases;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -143,21 +144,25 @@ public class Servidor {
 
                     switch (SwitchClases.Clazz.valueOf(msjEntrada.getClass().getSimpleName())){
                         case NombresUsuarios:
-                            // TODO
-                            nombresUsuarios = (NombresUsuarios) msjEntrada;
-                            nombresUsuarios = NombresUsuarios.getNombresUsuarios(nombresUsuarios.getNombreJugador(NombresUsuarios.NumJugador.JUGADOR1),
-                                    nombresUsuarios.getNombreJugador(NombresUsuarios.NumJugador.JUGADOR2), nombresUsuarios.getPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR1),
-                                    nombresUsuarios.getPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR2), nombresUsuarios.getTamañoTablero());
-                            try {
-                                servidorListaImgns = new Lista_DE_Imagenes(nombresUsuarios.getTamañoTablero(), 0);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            if(servidorListaImgns != null){
-                                writeMsg(servidorListaImgns);
-                            }
+                            Platform.runLater(() -> {
+                                nombresUsuarios = (NombresUsuarios) msjEntrada;
+                                nombresUsuarios = NombresUsuarios.getNombresUsuarios(nombresUsuarios.getNombreJugador(NombresUsuarios.NumJugador.JUGADOR1),
+                                        nombresUsuarios.getNombreJugador(NombresUsuarios.NumJugador.JUGADOR2), nombresUsuarios.getPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR1),
+                                        nombresUsuarios.getPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR2), nombresUsuarios.getTamañoTablero());
+                                try {
+                                    servidorListaImgns = new Lista_DE_Imagenes(nombresUsuarios.getTamañoTablero(), 0);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                if(servidorListaImgns != null){
+                                    writeMsg(servidorListaImgns);
+                                }
+
+                                // Enviar la matriz de posiciones random de las imagenes
+                                //writeMsg(ControlJuego.getObjeto_ControlJuego().getMatrizPosicionImagenes());
+                            });
                             break;
                         default:
                             System.out.println("No Class!!");

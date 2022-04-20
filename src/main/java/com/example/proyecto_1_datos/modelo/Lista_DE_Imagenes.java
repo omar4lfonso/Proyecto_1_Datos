@@ -14,7 +14,7 @@ public class Lista_DE_Imagenes implements Serializable {
     private NombresUsuarios.TABLERO_SIZE tamañoTablero;
     private int categoriaImagenes;
 
-    //private Lista_DE_Imagenes objeto_Lista_DE_Imagenes;
+    private static Lista_DE_Imagenes objeto_Lista_DE_Imagenes;
 
     public Lista_DE_Imagenes(NombresUsuarios.TABLERO_SIZE tamañoTablero, int categoriaImagenes) throws IOException, InterruptedException {
         this.categoriaImagenes = categoriaImagenes;
@@ -22,6 +22,11 @@ public class Lista_DE_Imagenes implements Serializable {
 
         listaDeImagenes = new ListaEnlazada<ImageIcon>();
         llenarListaImagenes();
+        objeto_Lista_DE_Imagenes = this;
+    }
+
+    public static Lista_DE_Imagenes getObjeto_Lista_DE_Imagenes(){
+        return objeto_Lista_DE_Imagenes;
     }
 
     public Lista_DE_Imagenes(NombresUsuarios.TABLERO_SIZE tamañoTablero, int categoriaImagenes, ListaEnlazada<ImageIcon> listaDeImagenesIn) throws InterruptedException {
@@ -30,6 +35,7 @@ public class Lista_DE_Imagenes implements Serializable {
 
         listaDeImagenes = new ListaEnlazada<ImageIcon>();
         copiarListaImagenes(listaDeImagenesIn);
+        objeto_Lista_DE_Imagenes = this;
     }
 
     /*public static Lista_DE_Imagenes getObjeto_Lista_DE_ImagenesLista_DE_Imagenes(NombresUsuarios.TABLERO_SIZE tamañoTablero, int categoriaImagenes) throws IOException {

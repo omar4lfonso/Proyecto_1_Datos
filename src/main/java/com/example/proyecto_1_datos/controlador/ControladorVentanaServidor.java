@@ -38,11 +38,13 @@ public class ControladorVentanaServidor {
     @FXML
     public void iniciarServidor(){
         // crear nuevo Servidor
-        servidor = new Servidor(1500, this);
-        new ServidorEjecutando().start();
-        labelTime.setText("00:00");
-        btnIniciarServidor.setDisable(true);
-        btnDetenerServidor.setDisable(false);
+        if(servidor == null) {
+            servidor = new Servidor(1500, this);
+            new ServidorEjecutando().start();
+            labelTime.setText("00:00");
+            btnIniciarServidor.setDisable(true);
+            btnDetenerServidor.setDisable(false);
+        }
     }
 
     /**
