@@ -1,7 +1,11 @@
 package com.example.proyecto_1_datos.controlador;
 
+import com.example.proyecto_1_datos.Proyecto_1_Juego_Memoria_Cliente;
 import com.example.proyecto_1_datos.modelo.NombresUsuarios;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -38,10 +42,17 @@ public class ControladorVentanaLoginCliente {
     private ObjectOutputStream sSalida;		// para escritura del socket
     private Socket socket;
 
+    private Proyecto_1_Juego_Memoria_Cliente mainVentana;
+    private static boolean imagenesRecibidas = false;
+
+    public void setProgramaPrincipal(Proyecto_1_Juego_Memoria_Cliente ProgramaPrincipal) {
+        this.mainVentana = ProgramaPrincipal;
+    }
+
     @FXML
     public void initialize(){
-        choiceBoxTTablero.getItems().addAll("3x3", "3x5", "5x5");
-        choiceBoxTTablero.setValue("3x3");
+        choiceBoxTTablero.getItems().addAll("T3X3", "T3X5", "T5X5");
+        choiceBoxTTablero.setValue("T3X3");
     }
 
     /**
@@ -54,8 +65,9 @@ public class ControladorVentanaLoginCliente {
         String stringJugador1, stringJugador2;
         stringJugador1 = txtNombreJugador1.getText();
         stringJugador2 = txtNombreJugador2.getText();
+        NombresUsuarios.TABLERO_SIZE tamañoTablero = NombresUsuarios.TABLERO_SIZE.valueOf(choiceBoxTTablero.getValue().toString());
         if(!stringJugador1.isEmpty() && !stringJugador2.isEmpty()){
-            objNombresUsuarios = new NombresUsuarios(stringJugador1, stringJugador2, 0, 0);
+            objNombresUsuarios = NombresUsuarios.getNombresUsuarios(stringJugador1, stringJugador2, 0, 0, tamañoTablero);
         }
         else{
             labelError.setText("Error: Debe llenar ambos nombres de los jugadores!");
@@ -65,6 +77,12 @@ public class ControladorVentanaLoginCliente {
         // si falla no se hace nada
         if(iniciar()){
             conectado = true;
+
+            /*while(imagenesRecibidas == false){
+                mainVentana.mostrarVentanaJuego();
+            }*/
+            mainVentana.mostrarVentanaJuego();
+
             return;
         }
     }

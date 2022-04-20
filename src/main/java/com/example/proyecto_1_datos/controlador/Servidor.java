@@ -32,6 +32,8 @@ public class Servidor {
     // Esta variable se usa para apagar el servidor
     private boolean continuarServidor;
 
+    private static NombresUsuarios nombresUsuarios;
+
     public Servidor(int puerto, ControladorVentanaServidor controladorVentanaServidor){
         this.puerto = puerto;
         this.controladorVentanaServidor = controladorVentanaServidor;
@@ -144,7 +146,11 @@ public class Servidor {
                 switch (SwitchClases.Clazz.valueOf(msjEntrada.getClass().getSimpleName())){
                     case NombresUsuarios:
                         // TODO
-                        System.out.println("Entramos!!");
+                        nombresUsuarios = (NombresUsuarios) msjEntrada;
+                        nombresUsuarios = NombresUsuarios.getNombresUsuarios(nombresUsuarios.getNombreJugador(NombresUsuarios.NumJugador.JUGADOR1),
+                                nombresUsuarios.getNombreJugador(NombresUsuarios.NumJugador.JUGADOR2), nombresUsuarios.getPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR1),
+                                nombresUsuarios.getPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR2), nombresUsuarios.getTamañoTablero());
+                        
                         break;
                     default:
                         System.out.println("No Class!!");

@@ -1,5 +1,7 @@
 package com.example.proyecto_1_datos.controlador;
 
+import com.example.proyecto_1_datos.Proyecto_1_Juego_Memoria_Cliente;
+import com.example.proyecto_1_datos.Proyecto_1_Juego_Memoria_Servidor;
 import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -23,9 +25,15 @@ public class ControladorVentanaJuegoCliente {
     @FXML
     private Label labelPuntajeJ2;
 
+    private Proyecto_1_Juego_Memoria_Cliente mainVentana;
+
     private static final int STARTTIME = 0;
     private Timeline timeline;
     private final IntegerProperty timeSeconds = new SimpleIntegerProperty();
+
+    public void setProgramaPrincipal(Proyecto_1_Juego_Memoria_Cliente ProgramaPrincipal) {
+        this.mainVentana = ProgramaPrincipal;
+    }
 
     private void updateTime() {
         // increment seconds

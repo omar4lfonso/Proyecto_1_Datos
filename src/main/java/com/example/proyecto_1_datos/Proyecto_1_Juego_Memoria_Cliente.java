@@ -1,5 +1,7 @@
 package com.example.proyecto_1_datos;
 
+import com.example.proyecto_1_datos.controlador.ControladorVentanaJuegoCliente;
+import com.example.proyecto_1_datos.controlador.ControladorVentanaLoginCliente;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,10 +25,11 @@ public class Proyecto_1_Juego_Memoria_Cliente extends Application {
     // Cargar el fmxl que contienen el GUI del Servidor.
     private void crearContenido() throws IOException {
         FXMLLoader loader = new FXMLLoader(Proyecto_1_Juego_Memoria_Servidor.class.getResource("Ventana_Login.fxml"));
+        String image = Proyecto_1_Juego_Memoria_Cliente.class.getResource("Backgound.png").toExternalForm();
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
-        //HelloController controller = loader.getController();
-        //controller.setProgramaPrincipal(this);
+        ControladorVentanaLoginCliente controller = loader.getController();
+        controller.setProgramaPrincipal(this);
         stage.show();
     }
 
@@ -36,7 +39,7 @@ public class Proyecto_1_Juego_Memoria_Cliente extends Application {
             FXMLLoader loader = new FXMLLoader(Proyecto_1_Juego_Memoria_Servidor.class.getResource("Ventana_Juego.fxml"));
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
-            /*stage.toFront();*/
+            stage.setTitle("Juego de Memoria");
             stage.show();
 
         } catch (Exception e) {
