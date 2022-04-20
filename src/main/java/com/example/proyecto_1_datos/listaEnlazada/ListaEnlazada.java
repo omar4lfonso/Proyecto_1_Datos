@@ -1,10 +1,12 @@
 package com.example.proyecto_1_datos.listaEnlazada;
 
+import java.io.Serializable;
+
 /**
  * Clase de lista doblemente enlazada genérica
  * @param <T> T: es el tipo de datos que se usan para el formato de las imágenes
  */
-public class ListaEnlazada <T>{
+public class ListaEnlazada <T> implements Serializable {
 
     private Nodo<T> cabeza;
     private Nodo<T> ultimo;
@@ -39,7 +41,7 @@ public class ListaEnlazada <T>{
      * Método para agregar un nodo al final de la lista doblemente enlazada
      * @param valor valor de tipo genérico T
      */
-    public void agregarFinal(T valor){
+    public void agregarFinal(T valor) throws InterruptedException {
         if (cabeza != null){
             ultimo = new Nodo(valor,null,ultimo);
             ultimo.getAnterior().setSiguiente(ultimo);
@@ -55,7 +57,7 @@ public class ListaEnlazada <T>{
      * @param valor valor de tipo genérico T
      * @param i indica la posición del nodo en la lista enlazada
      */
-    public void agregarEnPosición(T valor, int i){
+    public void agregarEnPosición(T valor, int i) throws InterruptedException {
         Nodo nodo = new Nodo(valor);
         if (cabeza == null){
             cabeza = nodo;

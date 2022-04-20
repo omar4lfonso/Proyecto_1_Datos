@@ -48,6 +48,10 @@ public class NombresUsuarios implements Serializable {
         return nombresUsuarios;
     }
 
+    public void eliminarSingletonNombresUsuarios(){
+        nombresUsuarios = null;
+    }
+
     private boolean getRandomBoolean() {
         Random random = new Random();
         return random.nextBoolean();

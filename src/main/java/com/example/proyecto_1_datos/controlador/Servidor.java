@@ -1,5 +1,6 @@
 package com.example.proyecto_1_datos.controlador;
 
+import com.example.proyecto_1_datos.modelo.Lista_DE_Imagenes;
 import com.example.proyecto_1_datos.modelo.NombresUsuarios;
 import com.example.proyecto_1_datos.modelo.SwitchClases;
 
@@ -33,6 +34,8 @@ public class Servidor {
     private boolean continuarServidor;
 
     private static NombresUsuarios nombresUsuarios;
+
+    private static Lista_DE_Imagenes servidorListaImgns;
 
     public Servidor(int puerto, ControladorVentanaServidor controladorVentanaServidor){
         this.puerto = puerto;
@@ -137,23 +140,34 @@ public class Servidor {
                 // Leer un Objeto del input Stream
                 try{
                     msjEntrada = sEntrada.readObject();
+
+                    switch (SwitchClases.Clazz.valueOf(msjEntrada.getClass().getSimpleName())){
+                        case NombresUsuarios:
+                            // TODO
+                            nombresUsuarios = (NombresUsuarios) msjEntrada;
+                            nombresUsuarios = NombresUsuarios.getNombresUsuarios(nombresUsuarios.getNombreJugador(NombresUsuarios.NumJugador.JUGADOR1),
+                                    nombresUsuarios.getNombreJugador(NombresUsuarios.NumJugador.JUGADOR2), nombresUsuarios.getPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR1),
+                                    nombresUsuarios.getPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR2), nombresUsuarios.getTamañoTablero());
+                            try {
+                                servidorListaImgns = new Lista_DE_Imagenes(nombresUsuarios.getTamañoTablero(), 0);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            if(servidorListaImgns != null){
+                                writeMsg(servidorListaImgns);
+                            }
+                            break;
+                        default:
+                            System.out.println("No Class!!");
+                    }
+
                 } catch (IOException e) {
                     mostrarLog(" Excepción leyendo el Stream: " + e);
                     break;
                 } catch (ClassNotFoundException e) {
                     break;
-                }
-                switch (SwitchClases.Clazz.valueOf(msjEntrada.getClass().getSimpleName())){
-                    case NombresUsuarios:
-                        // TODO
-                        nombresUsuarios = (NombresUsuarios) msjEntrada;
-                        nombresUsuarios = NombresUsuarios.getNombresUsuarios(nombresUsuarios.getNombreJugador(NombresUsuarios.NumJugador.JUGADOR1),
-                                nombresUsuarios.getNombreJugador(NombresUsuarios.NumJugador.JUGADOR2), nombresUsuarios.getPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR1),
-                                nombresUsuarios.getPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR2), nombresUsuarios.getTamañoTablero());
-                        
-                        break;
-                    default:
-                        System.out.println("No Class!!");
                 }
             }
             //eliminar de la lista que contiene los clientes conectados
@@ -180,9 +194,8 @@ public class Servidor {
         /**
          * Escribir mensaje de salida al cliente
          */
-        private boolean writeMsg(String msg) {
-            // TODO: definir cómo se mostraran los mensajes de log
-            /*// si el cliente aun esta conectado, enviar un mensaje
+        private boolean writeMsg(Object msg) {
+            // si el cliente aun esta conectado, enviar un mensaje
             if(!socket.isConnected()) {
                 close();
                 return false;
@@ -193,9 +206,8 @@ public class Servidor {
             }
             // si ocurre un error, no abortar solo informar al usuario
             catch(IOException e) {
-                mostrarLog("Error sending message to " + nombreUsuario);
-                mostrarLog(e.toString());
-            }*/
+                mostrarLog("Error Enviando mensaje " + e.toString());
+            }
             return true;
         }
     }

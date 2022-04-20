@@ -1,6 +1,7 @@
 module com.example.proyecto_1_datos {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
 
 
     opens com.example.proyecto_1_datos to javafx.fxml;

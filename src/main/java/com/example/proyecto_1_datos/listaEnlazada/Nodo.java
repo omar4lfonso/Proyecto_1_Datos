@@ -1,10 +1,12 @@
 package com.example.proyecto_1_datos.listaEnlazada;
 
+import java.io.Serializable;
+
 /**
  * Clase Nodo: es una forma genérica que define los componentes y métodos básicos de los nodos
  * en una lista doblemente enlazada
  */
-public class Nodo <T>{
+public class Nodo <T> implements Serializable {
 
     private T valor;
     private Nodo<T> siguiente;

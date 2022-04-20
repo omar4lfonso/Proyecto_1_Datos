@@ -1,12 +1,10 @@
 package com.example.proyecto_1_datos.controlador;
 
 import com.example.proyecto_1_datos.Proyecto_1_Juego_Memoria_Cliente;
+import com.example.proyecto_1_datos.modelo.Lista_DE_Imagenes;
 import com.example.proyecto_1_datos.modelo.NombresUsuarios;
-import javafx.animation.Timeline;
+import com.example.proyecto_1_datos.modelo.SwitchClases;
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -45,6 +43,8 @@ public class ControladorVentanaLoginCliente {
     private Proyecto_1_Juego_Memoria_Cliente mainVentana;
     private static boolean imagenesRecibidas = false;
 
+    private Lista_DE_Imagenes clienteListaImgns;
+
     public void setProgramaPrincipal(Proyecto_1_Juego_Memoria_Cliente ProgramaPrincipal) {
         this.mainVentana = ProgramaPrincipal;
     }
@@ -81,7 +81,6 @@ public class ControladorVentanaLoginCliente {
             /*while(imagenesRecibidas == false){
                 mainVentana.mostrarVentanaJuego();
             }*/
-            mainVentana.mostrarVentanaJuego();
 
             return;
         }
@@ -152,11 +151,27 @@ public class ControladorVentanaLoginCliente {
      * Esta clase permite esperar por los mensajes que provienen del servidor y los adjunta al area de texto
      */
     class EscucharServidor extends Thread {
-        public void correr(){
+        public void run(){
             while (true) {
                 try {
-                    Object msg = sEntrada.readObject();
-                    //String[] msgSeparado = msg.split(":");
+                    Object msjEntrada = sEntrada.readObject();
+
+                    switch (SwitchClases.Clazz.valueOf(msjEntrada.getClass().getSimpleName())) {
+                        case Lista_DE_Imagenes:
+                            Platform.runLater(() -> {
+                                try {
+                                    clienteListaImgns = new Lista_DE_Imagenes(((Lista_DE_Imagenes) msjEntrada).getTamañoTablero(), ((Lista_DE_Imagenes) msjEntrada).getCategoriaImagenes(), ((Lista_DE_Imagenes) msjEntrada).getListaDeImagenes());
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                try {
+                                    mainVentana.mostrarVentanaJuego();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            });
+
+                        //String[] msgSeparado = msg.split(":");
 
 
                     /*if(msgSeparado[1].equals("QUIENESTA")){
@@ -170,6 +185,8 @@ public class ControladorVentanaLoginCliente {
                     } else {
                         txtAreaMensajesServidor.appendText(msg);
                     }*/
+                    }
+
                 }
                 // no sucede con un objeto String pero aun asi debe realizarse el catch
                 catch (IOException e) {

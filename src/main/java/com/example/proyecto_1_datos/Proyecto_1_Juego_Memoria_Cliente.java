@@ -20,12 +20,12 @@ public class Proyecto_1_Juego_Memoria_Cliente extends Application {
         return miAppCliente;
     }*/
 
-    private Stage stage;
+    private Stage stage, stage2;
 
     // Cargar el fmxl que contienen el GUI del Servidor.
     private void crearContenido() throws IOException {
-        FXMLLoader loader = new FXMLLoader(Proyecto_1_Juego_Memoria_Servidor.class.getResource("Ventana_Login.fxml"));
-        String image = Proyecto_1_Juego_Memoria_Cliente.class.getResource("Backgound.png").toExternalForm();
+        FXMLLoader loader = new FXMLLoader(Proyecto_1_Juego_Memoria_Cliente.class.getResource("Ventana_Login.fxml"));
+        //String image = Proyecto_1_Juego_Memoria_Cliente.class.getResource("Backgound.png").toExternalForm();
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
         ControladorVentanaLoginCliente controller = loader.getController();
@@ -33,16 +33,16 @@ public class Proyecto_1_Juego_Memoria_Cliente extends Application {
         stage.show();
     }
 
-    public void mostrarVentanaJuego() {
+    public void mostrarVentanaJuego() throws IOException {
         try {
-
-            FXMLLoader loader = new FXMLLoader(Proyecto_1_Juego_Memoria_Servidor.class.getResource("Ventana_Juego.fxml"));
+            FXMLLoader loader = new FXMLLoader(Proyecto_1_Juego_Memoria_Cliente.class.getResource("Ventana_Juego.fxml"));
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
             stage.setTitle("Juego de Memoria");
             stage.show();
 
         } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
