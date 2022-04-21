@@ -8,9 +8,9 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="593.0" prefWidth="511.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.proyecto_1_datos.controlador.ControladorVentanaJuegoCliente">
    <children>
-      <AnchorPane prefHeight="594.0" prefWidth="511.0">
+      <AnchorPane fx:id="myAnchorPane" prefHeight="594.0" prefWidth="511.0" style="-fx-background-image: url('../resources/com/example/proyecto_1_datos/Backgound.png');">
          <children>
-            <TilePane fx:id="tilePaneMatrizImagenes" layoutX="14.0" layoutY="14.0" prefHeight="426.0" prefWidth="484.0" />
+            <TilePane fx:id="tilePane" layoutX="14.0" layoutY="14.0" prefHeight="426.0" prefWidth="484.0" />
             <Label fx:id="labelTiempo" layoutX="48.0" layoutY="520.0" text="Time" />
             <Label layoutX="176.0" layoutY="504.0" text="Turno de Jugador" />
             <Label fx:id="labelNJugador1Puntaje" layoutX="375.0" layoutY="504.0" text="P1" />
