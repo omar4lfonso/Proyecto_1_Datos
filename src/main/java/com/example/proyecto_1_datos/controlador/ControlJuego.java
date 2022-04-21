@@ -1,26 +1,42 @@
 package com.example.proyecto_1_datos.controlador;
 
 import com.example.proyecto_1_datos.modelo.Lista_DE_Imagenes;
+import com.example.proyecto_1_datos.modelo.NombresUsuarios;
 
-import java.io.Serial;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Vector;
 
-public class ControlJuego {
-
-    private Vector<String> numero;
+public class ControlJuego implements Serializable {
+    // Vector de interés: contiene la posición aleatoria de las cartas.
     private Vector<Integer> matrizPosicionImagenes;
+    private boolean turnoJugador; // False -> Jugador 1, True -> Jugador 2
+    private int puntajeJugador1;
+    private int puntajeJugador2;
+
+    // Variables secundarias para uso interno
+    private Vector<String> numero;
     private int filas, columnas;
     private int fichas;
     private Random aleatorio;
-    private int random;
 
+    public static boolean TURNO_JUGADOR1 = false;
+    public static boolean TURNO_JUGADOR2 = true;
+
+    // Mantenga este como un objeto único
     private static ControlJuego controlJuego;
 
     public static ControlJuego getObjeto_ControlJuego(){
         if(controlJuego == null){
             controlJuego = new ControlJuego();
+        }
+        return controlJuego;
+    }
+
+    public static ControlJuego getObjeto_ControlJuego(ControlJuego controlJuegoIn){
+        if(controlJuego == null){
+            controlJuego = new ControlJuego(controlJuegoIn);
         }
         return controlJuego;
     }
@@ -49,6 +65,18 @@ public class ControlJuego {
         matrizPosicionImagenes = new Vector<Integer>();
         prepararRandom();
         crearMatrizImagenes();
+        this.turnoJugador = getRandomBoolean();
+        this.puntajeJugador1 = 0;
+        this.puntajeJugador2 = 0;
+    }
+
+    private ControlJuego(ControlJuego controlJuegoIn){
+        this.matrizPosicionImagenes = new Vector<Integer>(controlJuegoIn.getMatrizPosicionImagenes().size());
+        //Collections.copy(this.matrizPosicionImagenes, controlJuegoIn.getMatrizPosicionImagenes());
+        this.matrizPosicionImagenes = controlJuegoIn.getMatrizPosicionImagenes();
+        this.turnoJugador = controlJuegoIn.getTurnoJugador();
+        this.puntajeJugador1 = controlJuegoIn.getPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR1);
+        this.puntajeJugador2 = controlJuegoIn.getPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR2);
     }
 
     // LLena el vector "numero" con parejas del 1 a 15
@@ -67,10 +95,10 @@ public class ControlJuego {
         }
     }
 
-    // Retorna un numero del 1 al 15 contenidos en "numero" y elimina este elemento del vetor.
+    // Retorna un número del 1 al 15 contenidos en "número" y elimina este elemento del vector.
     private int randomNumero(){
         int retorno;
-        random = aleatorio.nextInt(fichas);
+        int random = aleatorio.nextInt(fichas);
         retorno = Integer.parseInt(numero.elementAt(random));
         numero.removeElementAt(random);
         fichas-=1;
@@ -79,5 +107,61 @@ public class ControlJuego {
 
     public Vector<Integer> getMatrizPosicionImagenes(){
         return matrizPosicionImagenes;
+    }
+
+    // *******************Métodos para la selección del turno del jugador desde el Servidor.***************************
+    private boolean getRandomBoolean() {
+        Random random = new Random();
+        return random.nextBoolean();
+    }
+
+    /**
+     * @return turnoJugador
+     */
+    public boolean getTurnoJugador(){
+        return turnoJugador;
+    }
+
+    /**
+     * Invertir el turno de Jugador
+     * @param turnoJugador
+     */
+    public void toggleTurnoJugador(boolean turnoJugador){
+        this.turnoJugador = turnoJugador ? TURNO_JUGADOR2 : TURNO_JUGADOR1;
+    }
+
+    // *******************Métodos para la selección del turno del jugador desde el Cliente.***************************
+    public void setTurnoJugador(boolean turnoJugador){
+        this.turnoJugador = turnoJugador;
+    }
+
+    // *******************Métodos que operan sobre puntajes desde el Servidor:**********************
+
+    /**
+     * Este método asigna el puntaje ganado en la partida
+     * @param puntajeGanado
+     */
+    public void addPuntajeJugador(int puntajeGanado){
+        if(turnoJugador){
+            puntajeJugador2 += puntajeGanado;
+        }
+        else{
+            puntajeJugador1 += puntajeGanado;
+        }
+    }
+
+    // *******************Métodos que operan sobre puntajes desde el Cliente:**********************
+
+    public void setPuntajeJugador(NombresUsuarios.NumJugador jugador, int puntaje){
+        if(jugador == NombresUsuarios.NumJugador.JUGADOR1){
+            puntajeJugador1 = puntaje;
+        }
+        else{
+            puntajeJugador2 = puntaje;
+        }
+    }
+
+    public int getPuntajeJugador(NombresUsuarios.NumJugador jugador){
+        return jugador == NombresUsuarios.NumJugador.JUGADOR1 ? this.puntajeJugador1 : this.puntajeJugador2;
     }
 }

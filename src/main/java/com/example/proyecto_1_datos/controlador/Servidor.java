@@ -15,10 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Servidor {
-
-    // Debe crearse un ID único para cada conexión a un nuevo cliente
-    private static int idUnico;
-
     // un ArrayList para guardar la lista de clientes conectados
     private ClientThread clienteConectado;
 
@@ -146,11 +142,17 @@ public class Servidor {
                         case NombresUsuarios:
                             Platform.runLater(() -> {
                                 nombresUsuarios = (NombresUsuarios) msjEntrada;
-                                nombresUsuarios = NombresUsuarios.getNombresUsuarios(nombresUsuarios.getNombreJugador(NombresUsuarios.NumJugador.JUGADOR1),
-                                        nombresUsuarios.getNombreJugador(NombresUsuarios.NumJugador.JUGADOR2), nombresUsuarios.getPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR1),
-                                        nombresUsuarios.getPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR2), nombresUsuarios.getTamañoTablero());
+                                nombresUsuarios =
+                                        NombresUsuarios.getNombresUsuarios(
+                                                nombresUsuarios.getNombreJugador(NombresUsuarios.NumJugador.JUGADOR1),
+                                                nombresUsuarios.getNombreJugador(NombresUsuarios.NumJugador.JUGADOR2),
+                                                nombresUsuarios.getTamañoTablero()
+                                                                            );
                                 try {
-                                    servidorListaImgns = new Lista_DE_Imagenes(nombresUsuarios.getTamañoTablero(), 0);
+                                    servidorListaImgns = new Lista_DE_Imagenes(
+                                            nombresUsuarios.getTamañoTablero(),
+                                            0
+                                                                               );
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 } catch (InterruptedException e) {
@@ -161,7 +163,7 @@ public class Servidor {
                                 }
 
                                 // Enviar la matriz de posiciones random de las imagenes
-                                //writeMsg(ControlJuego.getObjeto_ControlJuego().getMatrizPosicionImagenes());
+                                writeMsg(ControlJuego.getObjeto_ControlJuego());
                             });
                             break;
                         default:

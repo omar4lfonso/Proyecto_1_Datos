@@ -67,7 +67,7 @@ public class ControladorVentanaLoginCliente {
         stringJugador2 = txtNombreJugador2.getText();
         NombresUsuarios.TABLERO_SIZE tamañoTablero = NombresUsuarios.TABLERO_SIZE.valueOf(choiceBoxTTablero.getValue().toString());
         if(!stringJugador1.isEmpty() && !stringJugador2.isEmpty()){
-            objNombresUsuarios = NombresUsuarios.getNombresUsuarios(stringJugador1, stringJugador2, 0, 0, tamañoTablero);
+            objNombresUsuarios = NombresUsuarios.getNombresUsuarios(stringJugador1, stringJugador2, tamañoTablero);
         }
         else{
             labelError.setText("Error: Debe llenar ambos nombres de los jugadores!");
@@ -155,8 +155,9 @@ public class ControladorVentanaLoginCliente {
             while (true) {
                 try {
                     Object msjEntrada = sEntrada.readObject();
+                    String msjClazz = msjEntrada.getClass().getSimpleName();
 
-                    switch (SwitchClases.Clazz.valueOf(msjEntrada.getClass().getSimpleName())) {
+                    switch (SwitchClases.Clazz.valueOf(msjClazz)) {
                         case Lista_DE_Imagenes:
                             Platform.runLater(() -> {
                                 try {
@@ -170,6 +171,21 @@ public class ControladorVentanaLoginCliente {
                                     e.printStackTrace();
                                 }
                             });
+                            break;
+                        case ControlJuego:
+                            // Recibir la información del servidor acerca de los movimientos:
+                            ControlJuego controlJuego = (ControlJuego) msjEntrada;
+
+                            ControlJuego controlJuegoCliente =
+                                    ControlJuego.getObjeto_ControlJuego(controlJuego);
+
+                            controlJuegoCliente.setTurnoJugador(controlJuego.getTurnoJugador());
+
+                            controlJuegoCliente.setPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR1,
+                                    controlJuego.getPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR1));
+                            controlJuegoCliente.setPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR2,
+                                    controlJuego.getPuntajeJugador(NombresUsuarios.NumJugador.JUGADOR2));
+
 
                         //String[] msgSeparado = msg.split(":");
 
