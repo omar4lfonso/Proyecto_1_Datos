@@ -1,7 +1,6 @@
 package com.example.proyecto_1_datos.modelo;
 
 import java.io.Serializable;
-import java.util.Random;
 
 public class NombresUsuarios implements Serializable {
 

@@ -20,7 +20,7 @@ public class Proyecto_1_Juego_Memoria_Cliente extends Application {
         return miAppCliente;
     }*/
 
-    private Stage stage, stage2;
+    private Stage stage;
 
     // Cargar el fmxl que contienen el GUI del Servidor.
     private void crearContenido() throws IOException {
